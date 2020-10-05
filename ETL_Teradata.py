@@ -53,6 +53,7 @@ logging.basicConfig(level=logging.INFO, filename=log_file, filemode='a',
 # Create a function to send email notification with log attached
 def send_email(subject, body, attachment=True, filename=log_file):
     '''Send email with or without attachment.'''
+    # Log info
     logging.info('Trying to send email')
     
     try:
@@ -98,6 +99,7 @@ def send_email(subject, body, attachment=True, filename=log_file):
 # Create a function to connect to SQL engine
 def conn_engine(account, password, ldap_login=False, dsn=user_dsn, driver=td_driver, port=port):
     '''Create engine and establish database connection, return engine.'''
+    #Log info
     logging.info('Trying to create engine')
     
     try:
@@ -131,6 +133,10 @@ def conn_engine(account, password, ldap_login=False, dsn=user_dsn, driver=td_dri
         
 def process_sql(query, engine, max_retry=50):
     '''Read data from database to dataframe. If failed, read again until max retry reached.'''
+    # Dispose engine to ensure no database connections are carried over
+    engine.dispose()
+    
+    # Initialize variables
     is_read = 0
     retry = 0
     
@@ -178,6 +184,10 @@ def process_sql(query, engine, max_retry=50):
 # Create a function to append new rows to prod table
 def append_new_rows_to_prod(df, temp, prod, engine):
     '''Delete then add data to temp table, insert only new data to prod table, return rows inserted.'''
+    # Dispose engine to ensure no database connections are carried over
+    engine.dispose()
+    
+    # Log info
     logging.info('Trying to append new rows to PROD')
     
     try:
@@ -253,6 +263,11 @@ def main():
         
         # Log error
         logging.error(f'''Error occurred; Ended program''')
+    
+    finally:
+        
+        # Dispose engine and close connections
+        engine.dispose()
     
     
 
