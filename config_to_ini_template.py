@@ -7,6 +7,7 @@ config['settings'] = {
 config['files'] = {
     'log_file': 'Runtime_info.log',
     'query_file': 'query.txt'
+    'save_to_filepath': r'\\domain\network\path'
 }
 
 config['emails'] = {
