@@ -263,6 +263,9 @@ def main():
         
         # Log error
         logging.error(f'''Error occurred; Ended program''')
+        
+        # Send email
+        send_email(email_to_error_subject, f'Check log')
     
     finally:
         
